@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Happy Birthday Coolest Mam! 🌸</title>
+  
+  <!-- Importing Cute Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+  <style>
+    /* --- GLOBAL STYLES --- */
+    body {
+      font-family: 'Poppins', sans-serif;
+      margin: 0;
+      background: linear-gradient(120deg, #fccb90 0%, #d57eeb 100%);
+      background-attachment: fixed;
+      color: #4a4a4a;
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+
+    /* Background Animation */
+    .sparkle {
+      position: absolute;
+      font-size: 25px;
+      animation: float 8s linear infinite;
+      opacity: 0.8;
+      z-index: -1;
+      pointer-events: none;
+    }
+    @keyframes float {
+      0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+      10% { opacity: 1; }
+      90% { opacity: 1; }
+      100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
+    }
+
+    /* Navigation Bar */
+    nav {
+      background: rgba(255, 255, 255, 0.25);
+      backdrop-filter: blur(10px);
+      padding: 15px 0;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      border-bottom: 1px solid rgba(255,255,255,0.3);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    }
+    nav ul {
+      list-style: none;
+      display: flex;
+      justify-content: center;
+      padding: 0;
+      margin: 0;
+      flex-wrap: wrap;
+    }
+    nav li { margin: 5px 10px; }
+    nav a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 16px;
+      padding: 8px 20px;
+      border-radius: 25px;
+      transition: all 0.3s ease;
+      background: rgba(255,255,255,0.1);
+      cursor: pointer;
+    }
+    nav a:hover, nav a.active {
+      background: #fff;
+      color: #d57eeb;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+
+    /* Page Sections Logic */
+    .page-section {
+      display: none; 
+      padding: 40px 20px;
+      text-align: center;
+      animation: fadeIn 0.8s ease;
+      min-height: 80vh;
+    }
+    .page-section.active-section {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Typography */
+    h1 {
+      font-family: 'Dancing Script', cursive;
+      color: #fff;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+      font-size: 3.5em;
+      margin-bottom: 20px;
+    }
+
+    /* Buttons */
+    button {
+      padding: 15px 35px;
+      font-size: 18px;
+      font-family: 'Poppins', sans-serif;
+      background: white;
+      color: #d57eeb;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      font-weight: bold;
+      margin-top: 20px;
+    }
+    button:hover {
+      transform: scale(1.05);
+      background: #fce4ec;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+    }
+
+    /* --- PAGE SPECIFIC STYLES --- */
+    .typewriter-box {
+      font-size: 24px;
+      color: #fff;
+      background: rgba(255,255,255,0.2);
+      padding: 15px 30px;
+      border-radius: 50px;
+      margin: 20px;
+      font-weight: bold;
+      border: 2px solid rgba(255,255,255,0.5);
+    }
+    .quote-card {
+      background: rgba(255,255,255,0.9);
+      padding: 30px;
+      border-radius: 20px;
+      max-width: 700px;
+      margin: 30px auto;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+      position: relative;
+      font-style: italic;
+    }
+
+    /* Gallery Page */
+    .gallery-grid {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 30px;
+      max-width: 1200px;
+      margin: 20px auto;
+    }
+    .polaroid {
+      background: white;
+      padding: 15px 15px 50px 15px;
+      box-shadow: 5px 5px 15px rgba(0,0,0,0.2);
+      transform: rotate(-2deg);
+      transition: all 0.3s ease;
+      width: 250px;
+      border-radius: 4px;
+    }
+    .polaroid:nth-child(even) { transform: rotate(3deg); }
+    .polaroid:hover { transform: rotate(0deg) scale(1.1); z-index: 10; }
+    .polaroid img {
+      width: 100%;
+      height: 250px;
+      object-fit: cover;
+      filter: sepia(20%);
+      border: 1px solid #eee;
+    }
+    .caption {
+      font-family: 'Dancing Script', cursive;
+      font-size: 24px;
+      color: #555;
+      margin-top: 15px;
+    }
+
+    /* Awards Page */
+    .awards-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 30px;
+      max-width: 1000px;
+      margin-top: 30px;
+    }
+    .award-card {
+      background: white;
+      padding: 25px;
+      border-radius: 50%;
+      width: 200px;
+      height: 200px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+      transition: transform 0.3s;
+      border: 5px solid #fff;
+      outline: 5px dashed #d57eeb;
+    }
+    .award-card:hover { transform: scale(1.1); background: #fff0f5; }
+    .icon { font-size: 45px; margin-bottom: 10px; }
+    .award-title { font-weight: bold; font-size: 18px; color: #d57eeb; }
+    .award-desc { font-size: 13px; color: #777; margin-top: 5px; }
+
+    /* Wishes Page */
+    #message-box {
+      background: #fff;
+      padding: 40px;
+      border-radius: 20px;
+      max-width: 600px;
+      margin: 30px auto;
+      display: none;
+      text-align: left;
+      border: 3px dashed #d57eeb;
+      animation: popup 0.5s ease;
+    }
+    @keyframes popup { from { transform: scale(0); } to { transform: scale(1); } }
+    
+    .signature-wall {
+      margin-top: 40px;
+      color: white;
+      background: rgba(255,255,255,0.15);
+      padding: 20px;
+      border-radius: 15px;
+      width: 80%;
+      max-width: 600px;
+    }
+    .names {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 15px;
+      font-family: 'Dancing Script', cursive;
+      font-size: 22px;
+      margin-top: 10px;
+    }
+
+    @media (max-width: 768px) {
+      h1 { font-size: 2.5em; }
+      .polaroid { width: 80%; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- LOCAL AUDIO PLAYER with Autoplay -->
+  <audio id="bgMusic" loop>
+    <source src="song.mp3" type="audio/mpeg">
+    Your browser does not support the audio element.
+  </audio>
+
+  <!-- Background Sparkles -->
+  <div class="sparkle" style="left:10%; animation-delay:0s;">🦋</div>
+  <div class="sparkle" style="left:30%; animation-delay:2s;">✨</div>
+  <div class="sparkle" style="left:50%; animation-delay:4s;">🌸</div>
+  <div class="sparkle" style="left:70%; animation-delay:1s;">🦋</div>
+  <div class="sparkle" style="left:90%; animation-delay:3s;">✨</div>
+
+  <!-- Navigation -->
+  <nav>
+    <ul>
+      <li><a onclick="showPage('home')" id="nav-home" class="active">Home</a></li>
+      <li><a onclick="showPage('gallery')" id="nav-gallery">Memories</a></li>
+      <li><a onclick="showPage('awards')" id="nav-awards">Awards</a></li>
+      <li><a onclick="showPage('wishes')" id="nav-wishes">Wishes</a></li>
+    </ul>
+  </nav>
+
+  <!-- ================= SECTION 1: HOME ================= -->
+  <div id="home" class="page-section active-section">
+    <h1>Happy Birthday, <br>Our Favorite Mam! 👑</h1>
+    
+    <div class="typewriter-box">
+      <span id="typewriter"></span>
+    </div>
+    
+    <div class="quote-card">
+      "A good teacher teaches from the book, but a great teacher like you teaches from the heart. Thank you for being our coolest mentor!" 💖
+    </div>
+
+    <button onclick="showPage('gallery')">Start the Journey 📸</button>
+  </div>
+
+  <!-- ================= SECTION 2: GALLERY ================= -->
+  <div id="gallery" class="page-section">
+    <h1>✨ Beautiful Moments ✨</h1>
+    
+    <div class="gallery-grid">
+      <!-- Make sure photos are in 'images' folder -->
+      <div class="polaroid">
+        <img src="images/photo5.jpeg" alt="Mam Photo">
+        <div class="caption">So Elegant! 😍</div>
+      </div>
+      <div class="polaroid">
+        <img src="images/photo6.jpeg" alt="Mam Photo">
+        <div class="caption">Classroom Fun 📚</div>
+      </div>
+      <div class="polaroid">
+        <img src="images/photo7.jpeg" alt="Mam Photo">
+        <div class="caption">Best Smile 😊</div>
+      </div>
+      <div class="polaroid">
+        <img src="images/photo8.jpeg" alt="Mam Photo">
+        <div class="caption">Celebration Mode 🎉</div>
+      </div>
+    </div>
+
+    <button onclick="showPage('awards')">See Awards 🏆</button>
+  </div>
+
+  <!-- ================= SECTION 3: AWARDS ================= -->
+  <div id="awards" class="page-section">
+    <h1>🏆 Fun Awards for Mam 🏆</h1>
+
+    <div class="awards-container">
+      <div class="award-card">
+        <div class="icon">👗</div>
+        <div class="award-title">Best Dressed</div>
+        <div class="award-desc">Always stylish & elegant!</div>
+      </div>
+      <div class="award-card">
+        <div class="icon">😎</div>
+        <div class="award-title">Coolest Vibe</div>
+        <div class="award-desc">Strictness: 0% <br> Coolness: 100%</div>
+      </div>
+      <div class="award-card">
+        <div class="icon">🧠</div>
+        <div class="award-title">Human Google</div>
+        <div class="award-desc">Answers to all questions!</div>
+      </div>
+      <div class="award-card">
+        <div class="icon">💖</div>
+        <div class="award-title">Queen of Hearts</div>
+        <div class="award-desc">Everyone's Favorite!</div>
+      </div>
+    </div>
+
+    <button onclick="showPage('wishes')">Read Wishes 💌</button>
+  </div>
+
+  <!-- ================= SECTION 4: WISHES ================= -->
+  <div id="wishes" class="page-section">
+    <h1>💌 A Little Surprise Note</h1>
+    <p style="color: white; font-size: 18px;">We have written something from our hearts...</p>
+    
+    <button onclick="openCard()">Tap to Open Card ✨</button>
+    
+    <div id="message-box">
+      <h3 style="color: #d57eeb; font-family: 'Dancing Script'; font-size: 32px; margin-top: 0;">Dearest Mam, 🌸</h3>
+      <p style="font-size: 16px; line-height: 1.8; color: #555;">
+        Happy Happy Birthday! 🎂<br><br>
+        Sach mein, aap sirf ek teacher nahi, hamare liye ek true inspiration ho. Thank you for handling our masti with a smile and guiding us like a friend.<br><br>
+        May your day be as beautiful as your outfit and as bright as your smile! We promise to (try to) complete assignments on time as a gift! 😉<br><br>
+        <strong>Lots of Love & Respect,</strong><br>
+        Your Favorite Batch 💕
+      </p>
+    </div>
+
+    <div class="signature-wall">
+      <h3>Signed by:</h3>
+      <div class="names">
+        <span>Deepanshu</span> • <span>Anurag</span> • <span>Gaurav</span> • <span>Naino</span> • <span>Sanjana</span> • <span>Mayank</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Confetti Canvas -->
+  <canvas id="confetti" style="position:fixed; top:0; left:0; pointer-events:none; z-index:9999;"></canvas>
+
+<script>
+  // --- Auto-play Music IMMEDIATELY on Website Load ---
+  const music = document.getElementById('bgMusic');
+  
+  // Set volume to 70% (so it's not too loud)
+  music.volume = 0.7;
+  
+  // TRICK: Create a fake user interaction programmatically
+  // This bypasses browser autoplay restrictions
+  window.addEventListener('load', function() {
+    // Create a temporary button and "click" it programmatically
+    const tempButton = document.createElement('button');
+    tempButton.style.display = 'none';
+    document.body.appendChild(tempButton);
+    
+    // Focus and click the button (simulates user interaction)
+    tempButton.focus();
+    tempButton.click();
+    
+    // Now we can play music immediately
+    setTimeout(function() {
+      const playPromise = music.play();
+      
+      if (playPromise !== undefined) {
+        playPromise.then(() => {
+          console.log("Music started successfully!");
+        }).catch(error => {
+          console.log("Autoplay failed, trying alternative method...");
+          
+          // Alternative: Mute first, play, then unmute
+          music.muted = true;
+          music.play().then(() => {
+            music.muted = false;
+          });
+        });
+      }
+    }, 100);
+    
+    // Remove the temporary button
+    setTimeout(() => {
+      document.body.removeChild(tempButton);
+    }, 200);
+  });
+  
+  // Also try to play when body is clicked (as backup)
+  document.body.addEventListener('click', function firstClick() {
+    music.play().catch(e => console.log("Still blocked"));
+    document.body.removeEventListener('click', firstClick);
+  });
+
+  // --- Navigation Logic ---
+  function showPage(pageId) {
+    document.querySelectorAll('.page-section').forEach(page => {
+      page.classList.remove('active-section');
+    });
+    document.querySelectorAll('nav a').forEach(link => {
+      link.classList.remove('active');
+    });
+    document.getElementById(pageId).classList.add('active-section');
+    document.getElementById('nav-' + pageId).classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  // --- Typewriter Effect ---
+  const textElement = document.getElementById("typewriter");
+  const texts = [
+    "You are the Coolest! 😎",
+    "Beauty with Brains! 🧠✨",
+    "Our Inspiration & Friend! 💖"
+  ];
+  let count = 0;
+  let index = 0;
+  let currentText = "";
+  let letter = "";
+
+  (function type() {
+    if (count === texts.length) { count = 0; }
+    currentText = texts[count];
+    letter = currentText.slice(0, ++index);
+    textElement.textContent = letter;
+    if (letter.length === currentText.length) {
+      count++;
+      index = 0;
+      setTimeout(type, 2000);
+    } else {
+      setTimeout(type, 100);
+    }
+  }());
+
+  // --- Card & Confetti Logic ---
+  function openCard() {
+    const box = document.getElementById("message-box");
+    if (box.style.display !== "block") {
+      box.style.display = "block";
+      startConfetti();
+    }
+  }
+
+  const canvas = document.getElementById("confetti");
+  const ctx = canvas.getContext("2d");
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  
+  let confettiPieces = [];
+
+  function startConfetti() {
+    for(let i=0; i<150; i++) {
+      confettiPieces.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height - canvas.height,
+        color: `hsl(${Math.random() * 360}, 100%, 70%)`,
+        size: Math.random() * 10 + 5,
+        speed: Math.random() * 5 + 2
+      });
+    }
+    animateConfetti();
+  }
+
+  function animateConfetti() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    confettiPieces.forEach((p, i) => {
+      p.y += p.speed;
+      p.x += Math.sin(p.y / 50);
+      ctx.fillStyle = p.color;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+      ctx.fill();
+      if(p.y > canvas.height) confettiPieces[i].y = -10;
+    });
+    requestAnimationFrame(animateConfetti);
+  }
+</script>
+</body>
+</html>
