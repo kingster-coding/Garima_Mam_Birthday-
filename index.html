@@ -7,17 +7,68 @@
   
   <!-- Importing Cute Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  
+  <!-- Font Awesome for Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
   <style>
     /* --- GLOBAL STYLES --- */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
     body {
       font-family: 'Poppins', sans-serif;
-      margin: 0;
       background: linear-gradient(120deg, #fccb90 0%, #d57eeb 100%);
       background-attachment: fixed;
       color: #4a4a4a;
       overflow-x: hidden;
       min-height: 100vh;
+      position: relative;
+    }
+
+    /* Audio Controls Styling */
+    .audio-controls {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 10000;
+      background: rgba(255, 255, 255, 0.9);
+      border-radius: 50px;
+      padding: 10px 15px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+      border: 2px solid #d57eeb;
+    }
+
+    .audio-controls button {
+      background: #d57eeb;
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      transition: all 0.3s ease;
+      margin: 0;
+      padding: 0;
+    }
+
+    .audio-controls button:hover {
+      background: #c56ae0;
+      transform: scale(1.1);
+    }
+
+    .volume-slider {
+      width: 80px;
     }
 
     /* Background Animation */
@@ -36,7 +87,7 @@
       100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
     }
 
-    /* Navigation Bar */
+    /* Navigation Bar - Improved Responsive */
     nav {
       background: rgba(255, 255, 255, 0.25);
       backdrop-filter: blur(10px);
@@ -47,15 +98,35 @@
       border-bottom: 1px solid rgba(255,255,255,0.3);
       box-shadow: 0 4px 10px rgba(0,0,0,0.05);
     }
+    
+    .nav-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-family: 'Dancing Script', cursive;
+      font-size: 24px;
+      font-weight: 700;
+      color: white;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+    }
+
     nav ul {
       list-style: none;
       display: flex;
-      justify-content: center;
       padding: 0;
       margin: 0;
-      flex-wrap: wrap;
     }
-    nav li { margin: 5px 10px; }
+    
+    nav li { 
+      margin: 0 10px; 
+    }
+    
     nav a {
       color: #fff;
       text-decoration: none;
@@ -66,11 +137,22 @@
       transition: all 0.3s ease;
       background: rgba(255,255,255,0.1);
       cursor: pointer;
+      white-space: nowrap;
     }
+    
     nav a:hover, nav a.active {
       background: #fff;
       color: #d57eeb;
       box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+
+    .mobile-menu-btn {
+      display: none;
+      background: none;
+      border: none;
+      color: white;
+      font-size: 24px;
+      cursor: pointer;
     }
 
     /* Page Sections Logic */
@@ -81,15 +163,24 @@
       animation: fadeIn 0.8s ease;
       min-height: 80vh;
     }
+    
     .page-section.active-section {
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
     }
+    
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(20px); }
       to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Main Container */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
     }
 
     /* Typography */
@@ -97,8 +188,10 @@
       font-family: 'Dancing Script', cursive;
       color: #fff;
       text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
-      font-size: 3.5em;
+      font-size: clamp(2.5rem, 5vw, 3.5rem);
       margin-bottom: 20px;
+      text-align: center;
+      line-height: 1.2;
     }
 
     /* Buttons */
@@ -116,6 +209,7 @@
       font-weight: bold;
       margin-top: 20px;
     }
+    
     button:hover {
       transform: scale(1.05);
       background: #fce4ec;
@@ -124,7 +218,7 @@
 
     /* --- PAGE SPECIFIC STYLES --- */
     .typewriter-box {
-      font-size: 24px;
+      font-size: clamp(18px, 4vw, 24px);
       color: #fff;
       background: rgba(255,255,255,0.2);
       padding: 15px 30px;
@@ -132,7 +226,10 @@
       margin: 20px;
       font-weight: bold;
       border: 2px solid rgba(255,255,255,0.5);
+      text-align: center;
+      max-width: 90%;
     }
+    
     .quote-card {
       background: rgba(255,255,255,0.9);
       padding: 30px;
@@ -142,28 +239,34 @@
       box-shadow: 0 10px 25px rgba(0,0,0,0.1);
       position: relative;
       font-style: italic;
+      width: 90%;
     }
 
     /* Gallery Page */
     .gallery-grid {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
       gap: 30px;
       max-width: 1200px;
       margin: 20px auto;
+      width: 100%;
     }
+    
     .polaroid {
       background: white;
       padding: 15px 15px 50px 15px;
       box-shadow: 5px 5px 15px rgba(0,0,0,0.2);
       transform: rotate(-2deg);
       transition: all 0.3s ease;
-      width: 250px;
       border-radius: 4px;
+      justify-self: center;
+      width: 100%;
+      max-width: 300px;
     }
+    
     .polaroid:nth-child(even) { transform: rotate(3deg); }
-    .polaroid:hover { transform: rotate(0deg) scale(1.1); z-index: 10; }
+    .polaroid:hover { transform: rotate(0deg) scale(1.05); z-index: 10; }
+    
     .polaroid img {
       width: 100%;
       height: 250px;
@@ -171,22 +274,25 @@
       filter: sepia(20%);
       border: 1px solid #eee;
     }
+    
     .caption {
       font-family: 'Dancing Script', cursive;
       font-size: 24px;
       color: #555;
       margin-top: 15px;
+      text-align: center;
     }
 
     /* Awards Page */
     .awards-container {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
       gap: 30px;
       max-width: 1000px;
-      margin-top: 30px;
+      margin: 30px auto;
+      width: 100%;
     }
+    
     .award-card {
       background: white;
       padding: 25px;
@@ -201,11 +307,32 @@
       transition: transform 0.3s;
       border: 5px solid #fff;
       outline: 5px dashed #d57eeb;
+      justify-self: center;
     }
-    .award-card:hover { transform: scale(1.1); background: #fff0f5; }
-    .icon { font-size: 45px; margin-bottom: 10px; }
-    .award-title { font-weight: bold; font-size: 18px; color: #d57eeb; }
-    .award-desc { font-size: 13px; color: #777; margin-top: 5px; }
+    
+    .award-card:hover { 
+      transform: scale(1.1); 
+      background: #fff0f5; 
+    }
+    
+    .icon { 
+      font-size: 45px; 
+      margin-bottom: 10px; 
+    }
+    
+    .award-title { 
+      font-weight: bold; 
+      font-size: 18px; 
+      color: #d57eeb; 
+      text-align: center;
+    }
+    
+    .award-desc { 
+      font-size: 13px; 
+      color: #777; 
+      margin-top: 5px; 
+      text-align: center;
+    }
 
     /* Wishes Page */
     #message-box {
@@ -218,8 +345,13 @@
       text-align: left;
       border: 3px dashed #d57eeb;
       animation: popup 0.5s ease;
+      width: 90%;
     }
-    @keyframes popup { from { transform: scale(0); } to { transform: scale(1); } }
+    
+    @keyframes popup { 
+      from { transform: scale(0); } 
+      to { transform: scale(1); } 
+    }
     
     .signature-wall {
       margin-top: 40px;
@@ -227,9 +359,10 @@
       background: rgba(255,255,255,0.15);
       padding: 20px;
       border-radius: 15px;
-      width: 80%;
+      width: 90%;
       max-width: 600px;
     }
+    
     .names {
       display: flex;
       flex-wrap: wrap;
@@ -240,19 +373,182 @@
       margin-top: 10px;
     }
 
+    /* Auto-play Warning Message */
+    .autoplay-warning {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(0, 0, 0, 0.85);
+      color: white;
+      padding: 30px;
+      border-radius: 15px;
+      z-index: 10001;
+      text-align: center;
+      max-width: 400px;
+      width: 90%;
+      display: none;
+      backdrop-filter: blur(10px);
+      border: 2px solid #d57eeb;
+    }
+
+    .autoplay-warning button {
+      margin-top: 20px;
+      background: #d57eeb;
+      color: white;
+    }
+
+    /* Footer */
+    .footer {
+      text-align: center;
+      padding: 30px 20px;
+      color: white;
+      font-size: 14px;
+      background: rgba(0, 0, 0, 0.1);
+      margin-top: 40px;
+    }
+
+    .github-link {
+      display: inline-block;
+      background: white;
+      color: #d57eeb;
+      padding: 10px 20px;
+      border-radius: 50px;
+      text-decoration: none;
+      margin-top: 15px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+
+    .github-link:hover {
+      background: #fce4ec;
+      transform: scale(1.05);
+    }
+
+    /* Responsive Media Queries */
+    @media (max-width: 992px) {
+      .gallery-grid {
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      }
+      
+      .awards-container {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
     @media (max-width: 768px) {
-      h1 { font-size: 2.5em; }
-      .polaroid { width: 80%; }
+      .nav-container {
+        flex-direction: column;
+      }
+      
+      .logo {
+        margin-bottom: 15px;
+      }
+      
+      nav ul {
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+      
+      nav li {
+        margin: 5px;
+      }
+      
+      .mobile-menu-btn {
+        display: block;
+        position: absolute;
+        top: 15px;
+        right: 20px;
+      }
+      
+      .nav-menu {
+        display: none;
+        width: 100%;
+        text-align: center;
+      }
+      
+      .nav-menu.active {
+        display: block;
+      }
+      
+      nav ul {
+        flex-direction: column;
+      }
+      
+      nav li {
+        margin: 10px 0;
+      }
+      
+      .awards-container {
+        grid-template-columns: 1fr;
+      }
+      
+      .award-card {
+        width: 180px;
+        height: 180px;
+      }
+      
+      .audio-controls {
+        bottom: 10px;
+        right: 10px;
+        padding: 8px 12px;
+      }
+      
+      .volume-slider {
+        width: 60px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      h1 {
+        font-size: 2rem;
+      }
+      
+      .polaroid {
+        max-width: 250px;
+      }
+      
+      .quote-card {
+        padding: 20px;
+      }
+      
+      #message-box {
+        padding: 25px;
+      }
+      
+      .audio-controls button {
+        width: 35px;
+        height: 35px;
+        font-size: 14px;
+      }
     }
   </style>
 </head>
 <body>
 
-  <!-- LOCAL AUDIO PLAYER with Autoplay -->
+  <!-- Auto-play Warning -->
+  <div id="autoplayWarning" class="autoplay-warning">
+    <h3><i class="fas fa-volume-up"></i> Music Playback</h3>
+    <p>To play background music, please click the "Allow Audio" button below. Some browsers require user interaction.</p>
+    <button onclick="allowAudio()">Allow Audio & Start Music</button>
+  </div>
+
+  <!-- LOCAL AUDIO PLAYER -->
   <audio id="bgMusic" loop>
     <source src="song.mp3" type="audio/mpeg">
     Your browser does not support the audio element.
   </audio>
+
+  <!-- Custom Audio Controls -->
+  <div class="audio-controls">
+    <button id="playBtn" onclick="toggleMusic()">
+      <i class="fas fa-play"></i>
+    </button>
+    <button id="muteBtn" onclick="toggleMute()">
+      <i class="fas fa-volume-up"></i>
+    </button>
+    <input type="range" min="0" max="100" value="70" class="volume-slider" id="volumeSlider" oninput="changeVolume(this.value)">
+  </div>
 
   <!-- Background Sparkles -->
   <div class="sparkle" style="left:10%; animation-delay:0s;">🦋</div>
@@ -263,246 +559,347 @@
 
   <!-- Navigation -->
   <nav>
-    <ul>
-      <li><a onclick="showPage('home')" id="nav-home" class="active">Home</a></li>
-      <li><a onclick="showPage('gallery')" id="nav-gallery">Memories</a></li>
-      <li><a onclick="showPage('awards')" id="nav-awards">Awards</a></li>
-      <li><a onclick="showPage('wishes')" id="nav-wishes">Wishes</a></li>
-    </ul>
+    <div class="nav-container">
+      <div class="logo">Happy Birthday Mam! 🎂</div>
+      <button class="mobile-menu-btn" id="mobileMenuBtn">
+        <i class="fas fa-bars"></i>
+      </button>
+      <div class="nav-menu" id="navMenu">
+        <ul>
+          <li><a onclick="showPage('home')" id="nav-home" class="active">Home</a></li>
+          <li><a onclick="showPage('gallery')" id="nav-gallery">Memories</a></li>
+          <li><a onclick="showPage('awards')" id="nav-awards">Awards</a></li>
+          <li><a onclick="showPage('wishes')" id="nav-wishes">Wishes</a></li>
+        </ul>
+      </div>
+    </div>
   </nav>
 
   <!-- ================= SECTION 1: HOME ================= -->
   <div id="home" class="page-section active-section">
-    <h1>Happy Birthday, <br>Our Favorite Mam! 👑</h1>
-    
-    <div class="typewriter-box">
-      <span id="typewriter"></span>
-    </div>
-    
-    <div class="quote-card">
-      "A good teacher teaches from the book, but a great teacher like you teaches from the heart. Thank you for being our coolest mentor!" 💖
-    </div>
+    <div class="container">
+      <h1>Happy Birthday, <br>Our Favorite Mam! 👑</h1>
+      
+      <div class="typewriter-box">
+        <span id="typewriter"></span>
+      </div>
+      
+      <div class="quote-card">
+        "A good teacher teaches from the book, but a great teacher like you teaches from the heart. Thank you for being our coolest mentor!" 💖
+      </div>
 
-    <button onclick="showPage('gallery')">Start the Journey 📸</button>
+      <button onclick="showPage('gallery')">Start the Journey 📸</button>
+    </div>
   </div>
 
   <!-- ================= SECTION 2: GALLERY ================= -->
   <div id="gallery" class="page-section">
-    <h1>✨ Beautiful Moments ✨</h1>
-    
-    <div class="gallery-grid">
-      <!-- Make sure photos are in 'images' folder -->
-      <div class="polaroid">
-        <img src="images/photo5.jpeg" alt="Mam Photo">
-        <div class="caption">So Elegant! 😍</div>
+    <div class="container">
+      <h1>✨ Beautiful Moments ✨</h1>
+      
+      <div class="gallery-grid">
+        <!-- Sample Images - Replace with actual images -->
+        <div class="polaroid">
+          <img src="https://images.unsplash.com/photo-1544717305-99670f9c28f4?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Mam Photo">
+          <div class="caption">So Elegant! 😍</div>
+        </div>
+        <div class="polaroid">
+          <img src="https://images.unsplash.com/photo-1580582932707-520aed937b7b?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Mam Photo">
+          <div class="caption">Classroom Fun 📚</div>
+        </div>
+        <div class="polaroid">
+          <img src="https://images.unsplash.com/photo-1544717305-2786b9f62cac?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Mam Photo">
+          <div class="caption">Best Smile 😊</div>
+        </div>
+        <div class="polaroid">
+          <img src="https://images.unsplash.com/photo-1545235617-9465d2a55698?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Mam Photo">
+          <div class="caption">Celebration Mode 🎉</div>
+        </div>
       </div>
-      <div class="polaroid">
-        <img src="images/photo6.jpeg" alt="Mam Photo">
-        <div class="caption">Classroom Fun 📚</div>
-      </div>
-      <div class="polaroid">
-        <img src="images/photo7.jpeg" alt="Mam Photo">
-        <div class="caption">Best Smile 😊</div>
-      </div>
-      <div class="polaroid">
-        <img src="images/photo8.jpeg" alt="Mam Photo">
-        <div class="caption">Celebration Mode 🎉</div>
-      </div>
-    </div>
 
-    <button onclick="showPage('awards')">See Awards 🏆</button>
+      <button onclick="showPage('awards')">See Awards 🏆</button>
+    </div>
   </div>
 
   <!-- ================= SECTION 3: AWARDS ================= -->
   <div id="awards" class="page-section">
-    <h1>🏆 Fun Awards for Mam 🏆</h1>
+    <div class="container">
+      <h1>🏆 Fun Awards for Mam 🏆</h1>
 
-    <div class="awards-container">
-      <div class="award-card">
-        <div class="icon">👗</div>
-        <div class="award-title">Best Dressed</div>
-        <div class="award-desc">Always stylish & elegant!</div>
+      <div class="awards-container">
+        <div class="award-card">
+          <div class="icon">👗</div>
+          <div class="award-title">Best Dressed</div>
+          <div class="award-desc">Always stylish & elegant!</div>
+        </div>
+        <div class="award-card">
+          <div class="icon">😎</div>
+          <div class="award-title">Coolest Vibe</div>
+          <div class="award-desc">Strictness: 0% <br> Coolness: 100%</div>
+        </div>
+        <div class="award-card">
+          <div class="icon">🧠</div>
+          <div class="award-title">Human Google</div>
+          <div class="award-desc">Answers to all questions!</div>
+        </div>
+        <div class="award-card">
+          <div class="icon">💖</div>
+          <div class="award-title">Queen of Hearts</div>
+          <div class="award-desc">Everyone's Favorite!</div>
+        </div>
       </div>
-      <div class="award-card">
-        <div class="icon">😎</div>
-        <div class="award-title">Coolest Vibe</div>
-        <div class="award-desc">Strictness: 0% <br> Coolness: 100%</div>
-      </div>
-      <div class="award-card">
-        <div class="icon">🧠</div>
-        <div class="award-title">Human Google</div>
-        <div class="award-desc">Answers to all questions!</div>
-      </div>
-      <div class="award-card">
-        <div class="icon">💖</div>
-        <div class="award-title">Queen of Hearts</div>
-        <div class="award-desc">Everyone's Favorite!</div>
-      </div>
+
+      <button onclick="showPage('wishes')">Read Wishes 💌</button>
     </div>
-
-    <button onclick="showPage('wishes')">Read Wishes 💌</button>
   </div>
 
   <!-- ================= SECTION 4: WISHES ================= -->
   <div id="wishes" class="page-section">
-    <h1>💌 A Little Surprise Note</h1>
-    <p style="color: white; font-size: 18px;">We have written something from our hearts...</p>
-    
-    <button onclick="openCard()">Tap to Open Card ✨</button>
-    
-    <div id="message-box">
-      <h3 style="color: #d57eeb; font-family: 'Dancing Script'; font-size: 32px; margin-top: 0;">Dearest Mam, 🌸</h3>
-      <p style="font-size: 16px; line-height: 1.8; color: #555;">
-        Happy Happy Birthday! 🎂<br><br>
-        Sach mein, aap sirf ek teacher nahi, hamare liye ek true inspiration ho. Thank you for handling our masti with a smile and guiding us like a friend.<br><br>
-        May your day be as beautiful as your outfit and as bright as your smile! We promise to (try to) complete assignments on time as a gift! 😉<br><br>
-        <strong>Lots of Love & Respect,</strong><br>
-        Your Favorite Batch 💕
-      </p>
-    </div>
+    <div class="container">
+      <h1>💌 A Little Surprise Note</h1>
+      <p style="color: white; font-size: 18px; text-align: center;">We have written something from our hearts...</p>
+      
+      <button onclick="openCard()">Tap to Open Card ✨</button>
+      
+      <div id="message-box">
+        <h3 style="color: #d57eeb; font-family: 'Dancing Script'; font-size: 32px; margin-top: 0;">Dearest Mam, 🌸</h3>
+        <p style="font-size: 16px; line-height: 1.8; color: #555;">
+          Happy Happy Birthday! 🎂<br><br>
+          Sach mein, aap sirf ek teacher nahi, hamare liye ek true inspiration ho. Thank you for handling our masti with a smile and guiding us like a friend.<br><br>
+          May your day be as beautiful as your outfit and as bright as your smile! We promise to (try to) complete assignments on time as a gift! 😉<br><br>
+          <strong>Lots of Love & Respect,</strong><br>
+          Your Favorite Batch 💕
+        </p>
+      </div>
 
-    <div class="signature-wall">
-      <h3>Signed by:</h3>
-      <div class="names">
-        <span>Deepanshu</span> • <span>Anurag</span> • <span>Gaurav</span> • <span>Naino</span> • <span>Sanjana</span> • <span>Mayank</span>
+      <div class="signature-wall">
+        <h3>Signed by:</h3>
+        <div class="names">
+          <span>Deepanshu</span> • <span>Anurag</span> • <span>Gaurav</span> • <span>Naino</span> • <span>Sanjana</span> • <span>Mayank</span>
+        </div>
       </div>
     </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <p>Made with ❤️ for the Coolest Mam | Happy Birthday!</p>
+    <a href="#" class="github-link" id="githubLink">
+      <i class="fab fa-github"></i> View on GitHub
+    </a>
   </div>
 
   <!-- Confetti Canvas -->
   <canvas id="confetti" style="position:fixed; top:0; left:0; pointer-events:none; z-index:9999;"></canvas>
 
-<script>
-  // --- Auto-play Music IMMEDIATELY on Website Load ---
-  const music = document.getElementById('bgMusic');
-  
-  // Set volume to 70% (so it's not too loud)
-  music.volume = 0.7;
-  
-  // TRICK: Create a fake user interaction programmatically
-  // This bypasses browser autoplay restrictions
-  window.addEventListener('load', function() {
-    // Create a temporary button and "click" it programmatically
-    const tempButton = document.createElement('button');
-    tempButton.style.display = 'none';
-    document.body.appendChild(tempButton);
+  <script>
+    // --- Audio Management with Auto-Play Fix ---
+    const music = document.getElementById('bgMusic');
+    const playBtn = document.getElementById('playBtn');
+    const muteBtn = document.getElementById('muteBtn');
+    const volumeSlider = document.getElementById('volumeSlider');
+    const autoplayWarning = document.getElementById('autoplayWarning');
     
-    // Focus and click the button (simulates user interaction)
-    tempButton.focus();
-    tempButton.click();
+    let audioAllowed = false;
+    let userInteracted = false;
     
-    // Now we can play music immediately
-    setTimeout(function() {
+    // Set initial volume
+    music.volume = 0.7;
+    volumeSlider.value = 70;
+    
+    // Function to show autoplay warning
+    function showAutoplayWarning() {
+      setTimeout(() => {
+        if (!userInteracted) {
+          autoplayWarning.style.display = 'block';
+        }
+      }, 1000);
+    }
+    
+    // Function to allow audio
+    function allowAudio() {
+      userInteracted = true;
+      audioAllowed = true;
+      autoplayWarning.style.display = 'none';
+      
+      // Try to play music
       const playPromise = music.play();
       
       if (playPromise !== undefined) {
         playPromise.then(() => {
-          console.log("Music started successfully!");
+          console.log("Music started after user interaction");
+          playBtn.innerHTML = '<i class="fas fa-pause"></i>';
         }).catch(error => {
-          console.log("Autoplay failed, trying alternative method...");
-          
-          // Alternative: Mute first, play, then unmute
-          music.muted = true;
-          music.play().then(() => {
-            music.muted = false;
-          });
+          console.log("Playback failed:", error);
         });
       }
-    }, 100);
+    }
     
-    // Remove the temporary button
-    setTimeout(() => {
-      document.body.removeChild(tempButton);
-    }, 200);
-  });
-  
-  // Also try to play when body is clicked (as backup)
-  document.body.addEventListener('click', function firstClick() {
-    music.play().catch(e => console.log("Still blocked"));
-    document.body.removeEventListener('click', firstClick);
-  });
-
-  // --- Navigation Logic ---
-  function showPage(pageId) {
-    document.querySelectorAll('.page-section').forEach(page => {
-      page.classList.remove('active-section');
-    });
-    document.querySelectorAll('nav a').forEach(link => {
-      link.classList.remove('active');
-    });
-    document.getElementById(pageId).classList.add('active-section');
-    document.getElementById('nav-' + pageId).classList.add('active');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }
-
-  // --- Typewriter Effect ---
-  const textElement = document.getElementById("typewriter");
-  const texts = [
-    "You are the Coolest! 😎",
-    "Beauty with Brains! 🧠✨",
-    "Our Inspiration & Friend! 💖"
-  ];
-  let count = 0;
-  let index = 0;
-  let currentText = "";
-  let letter = "";
-
-  (function type() {
-    if (count === texts.length) { count = 0; }
-    currentText = texts[count];
-    letter = currentText.slice(0, ++index);
-    textElement.textContent = letter;
-    if (letter.length === currentText.length) {
-      count++;
-      index = 0;
-      setTimeout(type, 2000);
-    } else {
-      setTimeout(type, 100);
+    // Toggle play/pause
+    function toggleMusic() {
+      userInteracted = true;
+      
+      if (music.paused) {
+        music.play();
+        playBtn.innerHTML = '<i class="fas fa-pause"></i>';
+      } else {
+        music.pause();
+        playBtn.innerHTML = '<i class="fas fa-play"></i>';
+      }
     }
-  }());
-
-  // --- Card & Confetti Logic ---
-  function openCard() {
-    const box = document.getElementById("message-box");
-    if (box.style.display !== "block") {
-      box.style.display = "block";
-      startConfetti();
+    
+    // Toggle mute
+    function toggleMute() {
+      userInteracted = true;
+      music.muted = !music.muted;
+      
+      if (music.muted) {
+        muteBtn.innerHTML = '<i class="fas fa-volume-mute"></i>';
+      } else {
+        muteBtn.innerHTML = '<i class="fas fa-volume-up"></i>';
+      }
     }
-  }
+    
+    // Change volume
+    function changeVolume(value) {
+      userInteracted = true;
+      music.volume = value / 100;
+    }
+    
+    // Try to play music on page load
+    window.addEventListener('load', function() {
+      // Show warning if audio is blocked
+      showAutoplayWarning();
+      
+      // Try to play with a delay
+      setTimeout(() => {
+        if (!userInteracted) {
+          const playPromise = music.play();
+          
+          if (playPromise !== undefined) {
+            playPromise.then(() => {
+              console.log("Music autoplayed successfully!");
+              playBtn.innerHTML = '<i class="fas fa-pause"></i>';
+              userInteracted = true;
+            }).catch(error => {
+              console.log("Autoplay blocked by browser");
+            });
+          }
+        }
+      }, 500);
+    });
+    
+    // Allow audio when user clicks anywhere on page
+    document.body.addEventListener('click', function() {
+      userInteracted = true;
+      
+      // Try to play if not already playing
+      if (music.paused && !audioAllowed) {
+        allowAudio();
+      }
+    });
 
-  const canvas = document.getElementById("confetti");
-  const ctx = canvas.getContext("2d");
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-  
-  let confettiPieces = [];
-
-  function startConfetti() {
-    for(let i=0; i<150; i++) {
-      confettiPieces.push({
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height - canvas.height,
-        color: `hsl(${Math.random() * 360}, 100%, 70%)`,
-        size: Math.random() * 10 + 5,
-        speed: Math.random() * 5 + 2
+    // --- Navigation Logic ---
+    function showPage(pageId) {
+      document.querySelectorAll('.page-section').forEach(page => {
+        page.classList.remove('active-section');
       });
+      document.querySelectorAll('nav a').forEach(link => {
+        link.classList.remove('active');
+      });
+      document.getElementById(pageId).classList.add('active-section');
+      document.getElementById('nav-' + pageId).classList.add('active');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      
+      // Toggle mobile menu closed on navigation
+      const navMenu = document.getElementById('navMenu');
+      navMenu.classList.remove('active');
     }
-    animateConfetti();
-  }
 
-  function animateConfetti() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    confettiPieces.forEach((p, i) => {
-      p.y += p.speed;
-      p.x += Math.sin(p.y / 50);
-      ctx.fillStyle = p.color;
-      ctx.beginPath();
-      ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-      ctx.fill();
-      if(p.y > canvas.height) confettiPieces[i].y = -10;
+    // Mobile menu toggle
+    document.getElementById('mobileMenuBtn').addEventListener('click', function() {
+      const navMenu = document.getElementById('navMenu');
+      navMenu.classList.toggle('active');
     });
-    requestAnimationFrame(animateConfetti);
-  }
-</script>
+
+    // --- Typewriter Effect ---
+    const textElement = document.getElementById("typewriter");
+    const texts = [
+      "You are the Coolest! 😎",
+      "Beauty with Brains! 🧠✨",
+      "Our Inspiration & Friend! 💖"
+    ];
+    let count = 0;
+    let index = 0;
+    let currentText = "";
+    let letter = "";
+
+    (function type() {
+      if (count === texts.length) { count = 0; }
+      currentText = texts[count];
+      letter = currentText.slice(0, ++index);
+      textElement.textContent = letter;
+      if (letter.length === currentText.length) {
+        count++;
+        index = 0;
+        setTimeout(type, 2000);
+      } else {
+        setTimeout(type, 100);
+      }
+    }());
+
+    // --- Card & Confetti Logic ---
+    function openCard() {
+      const box = document.getElementById("message-box");
+      if (box.style.display !== "block") {
+        box.style.display = "block";
+        startConfetti();
+      }
+    }
+
+    // Confetti animation
+    const canvas = document.getElementById("confetti");
+    const ctx = canvas.getContext("2d");
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    
+    let confettiPieces = [];
+
+    function startConfetti() {
+      for(let i=0; i<150; i++) {
+        confettiPieces.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height - canvas.height,
+          color: `hsl(${Math.random() * 360}, 100%, 70%)`,
+          size: Math.random() * 10 + 5,
+          speed: Math.random() * 5 + 2
+        });
+      }
+      animateConfetti();
+    }
+
+    function animateConfetti() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      confettiPieces.forEach((p, i) => {
+        p.y += p.speed;
+        p.x += Math.sin(p.y / 50);
+        ctx.fillStyle = p.color;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+        ctx.fill();
+        if(p.y > canvas.height) confettiPieces[i].y = -10;
+      });
+      requestAnimationFrame(animateConfetti);
+    }
+    
+    // Set GitHub link
+    document.getElementById('githubLink').href = "https://github.com/yourusername/happy-birthday-mam";
+    
+    // Resize canvas on window resize
+    window.addEventListener('resize', function() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    });
+  </script>
 </body>
 </html>
